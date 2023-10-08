@@ -1,4 +1,5 @@
 import React from "react";
+import computer from "./../images/computer.jfif"
 
 const POSSystem= () => {
     const styles={"wrapper":{"display":"flex","fontSize":"small"},"leftBox":{"width":"40%","backgroundColor":"rgba(238,239,241,255)","marginRight":"0.2%"},"rightBox":{"width":"60%","backgroundColor":"rgba(238,239,241,255)"}};
@@ -14,10 +15,44 @@ const POSSystem= () => {
                 <div style={{"margin":"3%","textAlign":"center","width":"93%","backgroundColor":"white","fontSize":"large","padding":"8% 0"}}>
                     THERE ARE NO PRODUCTS 
                 </div>
-                <div>
+                <div style={{"height":"300px"}}>
+                </div>
+                <div style={{"display":"flex"}}>
+                   <table style={{"width":"100%"}}>
+                    <tbody >
+                        <td style={{"width":"40%"}}>
+                            <tr style={{"backgroundColor":"rgba(246,247,246,255)","margin":"2px","display":"block"}}>SubTotal</tr>
+                            <tr style={{"backgroundColor":"rgba(246,247,246,255)","margin":"2px","display":"block"}}>VAT tax</tr>
+                            <tr style={{"backgroundColor":"rgba(246,247,246,255)","margin":"2px","display":"block"}}>Discount</tr>
+                            <tr style={{"backgroundColor":"rgba(246,247,246,255)","margin":"2px","display":"block"}}>Total</tr>
+                        </td>
+                        <td style={{"backgroundColor":"white","width":"39%"}}>
+                            <tr>0.000 EUR</tr>
+                            <tr><input placeholder="10%" style={{"width":"39%","height":"10px"}}/></tr>
+                            <tr><input placeholder="10%" style={{"width":"39%","height":"10px"}}/></tr>
+                            <tr>0.000 EUR</tr>
+                        </td>
+                        <td style={{"float":"right","backgroundColor":"white","width":"100%"}}>
+                            <tr>0 items</tr>
+                            <tr>0.000 EUR</tr>
+                            <tr>0.000 EUR</tr>
+                            <tr>&nbsp;</tr>
+                        </td>
+                    </tbody>
+                    </table> 
+                </div>
+                <div style={styles.wrapper}>
+                    <button style={{"backgroundColor":"red","width":"50%","color":"white","border":"0","margin":"2%","padding":"3%"}}>Cancle Sale</button>
+                    <button style={{"backgroundColor":"green","width":"50%","color":"white","border":"0","margin":"2%","padding":"3%"}}>Process Sale</button>
                 </div>
             </div>
-            <div style={styles.rightBox}>hi2</div>
+            <div style={styles.rightBox}>
+                <figure style={{"display":"contents"}}>
+                <img style={{"height":"100px","width":"100px","marginLeft":"10px","marginTop":"10px"}} src={computer}></img>
+                <figcaption style={{"textAlign":"center","display":"flex","marginLeft":"30px"}}>Computer</figcaption>
+                </figure>
+                
+            </div>
         </div>
     )
 };
