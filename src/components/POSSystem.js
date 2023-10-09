@@ -1,10 +1,52 @@
 import React,{useState} from "react";
-import computer from "./../images/computer.jfif"
+import invalid from "./../images/invalid.png"
 
 const POSSystem= () => {
     const [computerState,setComputer]=useState(0);
-    const ClickComputer=(e)=>{
-        e.preventDefault();
+    const productList=[
+{
+"name": "comuter",
+"price": "130",
+"category": "computers",
+"description": "",
+"image": "comuter.jpg"
+},
+{
+"name": "sweater",
+"price": "1",
+"category": "Clothing",
+"description": "fashion, clothes , sweater, wool, cardigan,..."
+},
+{
+"name": "tie",
+"price": "46",
+"category": "Clothing",
+"description": "fashion, tie, clothes, accessory , accessoire,...",
+"image": "tie.jpeg"
+},
+{
+"name": "jacket",
+"price": "190",
+"category": "Clothing",
+"description": "winter jacket ",
+"image": "jacket.jpeg"
+}
+];
+
+    const renderproduct = ()=>{
+        let items= productList.filter(specs=>specs.hasOwnProperty('name')).map((item,index)=>{
+            return(
+                <div style={{"display":"inline-block","maxWidth":"300px","margin":"auto","textAlign":"center","fontFamily":"arial"}}>
+                <img onClick={()=>ClickImage(index)} style={{"height":"100px","width":"100px","marginLeft":"10px","marginTop":"10px"}} src={invalid}></img>
+                <h6>{item.name}</h6>
+                </div>
+            );
+        });
+        return items;
+    };
+
+    const ClickImage=(index)=>{
+
         setComputer(computerState+1);
 
     }
@@ -67,11 +109,7 @@ const POSSystem= () => {
                 </div>
             </div>
             <div style={styles.rightBox}>
-                <figure style={{"display":"contents"}}>
-                <img onClick={ClickComputer} style={{"height":"100px","width":"100px","marginLeft":"10px","marginTop":"10px"}} src={computer}></img>
-                <figcaption style={{"textAlign":"center","display":"flex","marginLeft":"30px"}}>Computer</figcaption>
-                </figure>
-                
+                {renderproduct()}
             </div>
         </div>
     )
