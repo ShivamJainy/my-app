@@ -5,7 +5,7 @@ const POSSystem= () => {
     const [computerState,setComputer]=useState(0);
     const productList=[
 {
-"name": "comuter",
+"name": "computer",
 "price": "130",
 "category": "computers",
 "description": "",
@@ -33,6 +33,9 @@ const POSSystem= () => {
 }
 ];
 
+    const [productAdded,setProductAdded]=useState([]);
+
+
     const renderproduct = ()=>{
         let items= productList.filter(specs=>specs.hasOwnProperty('name')).map((item,index)=>{
             return(
@@ -45,8 +48,24 @@ const POSSystem= () => {
         return items;
     };
 
-    const ClickImage=(index)=>{
+    const renderProductAdded=()=>{
+        let items=productAdded.filter(specs=>specs.hasOwnProperty('name')).map((item,index)=>{
+            return (
+                <div style={styles.wrapper}>
+                        <div style={{"width":"30%","textAlign":"center"}}>{item.name}</div>
+                    <div style={{"width":"20%","textAlign":"right"}}>{item.price}</div>
+                    <div style={{"width":"30%","textAlign":"center"}}>1</div>
+                    <div style={{"width":"15%","textAlign":"right"}}>{item.price}</div>
+                    </div>
+            );
+        });
+        return items;
+    }
 
+    const ClickImage=(index)=>{
+        let product=productAdded;
+        product.push(productList[index]);
+        setProductAdded(product);
         setComputer(computerState+1);
 
     }
@@ -64,18 +83,14 @@ const POSSystem= () => {
                     <div style={{"width":"30%","textAlign":"center"}}>Quantity</div>
                     <div style={{"width":"15%","textAlign":"right"}}>Total</div>
                 </div>
-                {!computerState &&
+                {productAdded.length==0 &&
                 <div style={{"margin":"3%","textAlign":"center","width":"93%","backgroundColor":"white","fontSize":"large","padding":"8% 0"}}>
                     THERE ARE NO PRODUCTS 
                 </div>
                     }
-                    {computerState &&
-                    <div style={styles.wrapper}>
-                        <div style={{"width":"30%","textAlign":"center"}}>Computer</div>
-                    <div style={{"width":"20%","textAlign":"right"}}>130</div>
-                    <div style={{"width":"30%","textAlign":"center"}}>{computerState}</div>
-                    <div style={{"width":"15%","textAlign":"right"}}>{computerState*130}</div>
-                    </div>
+                    {productAdded &&
+                    renderProductAdded()
+                    
                     }
                 <div style={{"height":"300px"}}>
                 </div>
