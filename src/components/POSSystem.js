@@ -43,6 +43,12 @@ const POSSystem= () => {
 
     const [VATValue,setVATValue]=useState(0);
 
+    const [Discount,setDiscount]=useState(0);
+
+    const [DiscountValue,setDiscountValue]=useState(0);
+
+    const [Total,setTotal]=useState(subTotal);
+
     const handleVAT=(e)=>{
         setVAT(e.target.value)
     }
@@ -50,7 +56,14 @@ const POSSystem= () => {
     useEffect(()=>{
         let value=(VAT/100)*subTotal;
         setVATValue(value);
+        setTotal(Total+value);
     },[VAT]);
+
+    useEffect(()=>{
+        let value=(Discount/100)*subTotal;
+        setDiscountValue(value);
+        setTotal(Total-Discount);
+    },[Discount]);
 
     const renderproduct = ()=>{
         let items= productList.filter(specs=>specs.hasOwnProperty('name')).map((item,index)=>{
@@ -90,6 +103,11 @@ const POSSystem= () => {
         setProductAdded(product);
 
     }
+
+    useEffect(()=>{
+        setTotal(subTotal);
+    },[subTotal]);
+
     const cancelBtn=(e)=>{
         e.preventDefault();
         window.location.reload();
@@ -127,13 +145,13 @@ const POSSystem= () => {
                         <td style={{"backgroundColor":"white","width":"39%"}}>
                             <tr>{subTotal} EUR</tr>
                             <tr><input  value={VAT} onChange={handleVAT} style={{"width":"39%","height":"10px"}}/></tr>
-                            <tr><input placeholder="10%" style={{"width":"39%","height":"10px"}}/></tr>
-                            <tr>0.000 EUR</tr>
+                            <tr><input value={Discount} onChange={(e)=>setDiscount(e.target.value)} style={{"width":"39%","height":"10px"}}/></tr>
+                            <tr>{Total} EUR</tr>
                         </td>
                         <td style={{"float":"right","backgroundColor":"white","width":"100%"}}>
                             <tr>{items1} items</tr>
                             <tr>{VATValue} EUR</tr>
-                            <tr>0.000 EUR</tr>
+                            <tr>{DiscountValue} EUR</tr>
                             <tr>&nbsp;</tr>
                         </td>
                     </tbody>
