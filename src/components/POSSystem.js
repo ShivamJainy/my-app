@@ -1,8 +1,10 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import invalid from "./../images/invalid.png"
 
 const POSSystem= () => {
-    const [computerState,setComputer]=useState(0);
+
+    const [VAT,setVAT]=useState(0);
+
     const productList=[
 {
 "name": "computer",
@@ -35,6 +37,20 @@ const POSSystem= () => {
 
     const [productAdded,setProductAdded]=useState([]);
 
+    const [items1,setItems1]=useState(0);
+
+    const [subTotal,setSubTotal]=useState(0);
+
+    const [VATValue,setVATValue]=useState(0);
+
+    const handleVAT=(e)=>{
+        setVAT(e.target.value)
+    }
+
+    useEffect(()=>{
+        let value=(VAT/100)*subTotal;
+        setVATValue(value);
+    },[VAT]);
 
     const renderproduct = ()=>{
         let items= productList.filter(specs=>specs.hasOwnProperty('name')).map((item,index)=>{
@@ -65,8 +81,13 @@ const POSSystem= () => {
     const ClickImage=(index)=>{
         let product=productAdded;
         product.push(productList[index]);
+        setItems1(product.length);
+        let sum=0;
+        for(let i=0;i<product.length;i++){
+            sum=sum+Number(product[i].price);
+        }
+        setSubTotal(sum);
         setProductAdded(product);
-        setComputer(computerState+1);
 
     }
     const cancelBtn=(e)=>{
@@ -104,14 +125,14 @@ const POSSystem= () => {
                             <tr style={{"backgroundColor":"rgba(246,247,246,255)","margin":"2px","display":"block"}}>Total</tr>
                         </td>
                         <td style={{"backgroundColor":"white","width":"39%"}}>
-                            <tr>0.000 EUR</tr>
-                            <tr><input placeholder="10%" style={{"width":"39%","height":"10px"}}/></tr>
+                            <tr>{subTotal} EUR</tr>
+                            <tr><input  value={VAT} onChange={handleVAT} style={{"width":"39%","height":"10px"}}/></tr>
                             <tr><input placeholder="10%" style={{"width":"39%","height":"10px"}}/></tr>
                             <tr>0.000 EUR</tr>
                         </td>
                         <td style={{"float":"right","backgroundColor":"white","width":"100%"}}>
-                            <tr>0 items</tr>
-                            <tr>0.000 EUR</tr>
+                            <tr>{items1} items</tr>
+                            <tr>{VATValue} EUR</tr>
                             <tr>0.000 EUR</tr>
                             <tr>&nbsp;</tr>
                         </td>
