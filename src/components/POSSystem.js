@@ -49,21 +49,23 @@ const POSSystem= () => {
 
     const [Total,setTotal]=useState(subTotal);
 
+
     const handleVAT=(e)=>{
-        setVAT(e.target.value)
+        let value=Number(e.target.value);
+        setVAT(value);
+        let value1=(value*subTotal)/100;
+        setVATValue(value1);
+        setTotal(subTotal+value1-DiscountValue);
     }
 
-    useEffect(()=>{
-        let value=(VAT/100)*subTotal;
-        setVATValue(value);
-        setTotal(Total+value);
-    },[VAT]);
+    const handleDiscount=(e)=>{
+        let value=Number(e.target.value);
+        setDiscount(value);
+        let value2=(value*subTotal)/100;
+        setDiscountValue(value2);
+        setTotal(subTotal+VATValue-value2);
+    }
 
-    useEffect(()=>{
-        let value=(Discount/100)*subTotal;
-        setDiscountValue(value);
-        setTotal(Total-Discount);
-    },[Discount]);
 
     const renderproduct = ()=>{
         let items= productList.filter(specs=>specs.hasOwnProperty('name')).map((item,index)=>{
@@ -145,7 +147,7 @@ const POSSystem= () => {
                         <td style={{"backgroundColor":"white","width":"39%"}}>
                             <tr>{subTotal} EUR</tr>
                             <tr><input  value={VAT} onChange={handleVAT} style={{"width":"39%","height":"10px"}}/></tr>
-                            <tr><input value={Discount} onChange={(e)=>setDiscount(e.target.value)} style={{"width":"39%","height":"10px"}}/></tr>
+                            <tr><input value={Discount} onChange={handleDiscount} style={{"width":"39%","height":"10px"}}/></tr>
                             <tr>{Total} EUR</tr>
                         </td>
                         <td style={{"float":"right","backgroundColor":"white","width":"100%"}}>
