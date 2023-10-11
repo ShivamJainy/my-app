@@ -49,6 +49,10 @@ const POSSystem= () => {
 
     const [Total,setTotal]=useState(subTotal);
 
+    const [showPopUp,setShowPopUp] = useState(false);
+
+    const [blur,setBlur]=useState("");
+
 
     const handleVAT=(e)=>{
         let value=Number(e.target.value);
@@ -84,10 +88,32 @@ const POSSystem= () => {
             return (
                 <div style={styles.wrapper}>
                         <div style={{"width":"30%","textAlign":"center"}}>{item.name}</div>
-                    <div style={{"width":"20%","textAlign":"right"}}>{item.price}</div>
+                    <div style={{"width":"20%","textAlign":"right"}}>{Math.round((item.price*1000)/1000).toFixed(3)}</div>
                     <div style={{"width":"30%","textAlign":"center"}}>1</div>
-                    <div style={{"width":"15%","textAlign":"right"}}>{item.price}</div>
+                    <div style={{"width":"15%","textAlign":"right"}}>{Math.round((item.price*1000)/1000).toFixed(3)}</div>
                     </div>
+            );
+        });
+        return items;
+    }
+
+    const renderReceiptProductAdded=()=>{
+        let items=productAdded.filter(specs=>specs.hasOwnProperty('name')).map((item,index)=>{
+            return (
+                <div style={{"display":"flex"}}>
+                    <div style={{"width":"10%"}}>
+                        {index+1}
+                    </div>
+                    <div style={{"width":"50%"}}>
+                        {item.name}
+                    </div>
+                    <div style={{"width":"20%"}}>
+                        1
+                    </div>
+                    <div style={{"width":"20%"}}>
+                        {Math.round((item.price*1000)/1000).toFixed(3)}
+                    </div>
+                </div>
             );
         });
         return items;
@@ -119,8 +145,16 @@ const POSSystem= () => {
         e.preventDefault();
         window.location.reload();
     }
-    const styles={"wrapper":{"display":"flex","fontSize":"small"},"leftBox":{"width":"40%","backgroundColor":"rgba(238,239,241,255)","marginRight":"0.2%"},"rightBox":{"width":"60%","backgroundColor":"rgba(238,239,241,255)"}};
+
+    const processSales=(e)=>{
+        e.preventDefault();
+        setBlur("blur(8px)");
+        setShowPopUp(true);
+    }
+
+    const styles={"wrapper":{"display":"flex","fontSize":"small","filter":`${blur}`},"leftBox":{"width":"40%","backgroundColor":"rgba(238,239,241,255)","marginRight":"0.2%"},"rightBox":{"width":"60%","backgroundColor":"rgba(238,239,241,255)"}};
     return(
+        <div>
         <div style={styles.wrapper}>
             <div style={styles.leftBox}>
                 <div style={styles.wrapper}>
@@ -150,15 +184,15 @@ const POSSystem= () => {
                             <tr style={{"backgroundColor":"rgba(246,247,246,255)","margin":"2px","display":"block"}}>Total</tr>
                         </td>
                         <td style={{"backgroundColor":"white","width":"39%"}}>
-                            <tr>{subTotal} EUR</tr>
+                            <tr>{Math.round((subTotal*1000)/1000).toFixed(3)} EUR</tr>
                             <tr><input  value={VAT} onChange={handleVAT} style={{"width":"39%","height":"10px"}}/></tr>
                             <tr><input value={Discount} onChange={handleDiscount} style={{"width":"39%","height":"10px"}}/></tr>
-                            <tr>{Total} EUR</tr>
+                            <tr>{Math.round((Total*1000)/1000).toFixed(3)} EUR</tr>
                         </td>
                         <td style={{"float":"right","backgroundColor":"white","width":"100%"}}>
                             <tr>{items1} items</tr>
-                            <tr>{VATValue} EUR</tr>
-                            <tr>{DiscountValue} EUR</tr>
+                            <tr>{Math.round((VATValue*1000)/1000).toFixed(3)} EUR</tr>
+                            <tr>{Math.round((DiscountValue*1000)/1000).toFixed(3)} EUR</tr>
                             <tr>&nbsp;</tr>
                         </td>
                     </tbody>
@@ -166,12 +200,70 @@ const POSSystem= () => {
                 </div>
                 <div style={styles.wrapper}>
                     <button onClick={cancelBtn} style={{"backgroundColor":"red","width":"50%","color":"white","border":"0","margin":"2%","padding":"3%"}}>Cancel Sale</button>
-                    <button style={{"backgroundColor":"green","width":"50%","color":"white","border":"0","margin":"2%","padding":"3%"}}>Process Sale</button>
+                    <button onClick={processSales} style={{"backgroundColor":"green","width":"50%","color":"white","border":"0","margin":"2%","padding":"3%"}}>Process Sale</button>
                 </div>
             </div>
             <div style={styles.rightBox}>
                 {renderproduct()}
             </div>
+            
+        </div>
+        <div>
+        {showPopUp &&
+            <div style={{"position":"absolute","textAlign":"center","top":"30%","left":"40%"}}>
+                <div style={{"width":"200%"}}>
+                <h4 style={{"backgroundColor":"black","color":"white","marginBottom":"0"}}>Receipt</h4>
+                <div style={{"backgroundColor":"white"}}>
+                <p style={{"marginTop":"0"}}>Sale No.</p>
+                <p style={{"textAlign":"left"}}>Date</p>
+                <div style={{"display":"flex"}}>
+                    <div style={{"width":"10%"}}>
+                        #
+                    </div>
+                    <div style={{"width":"50%"}}>
+                        product
+                    </div>
+                    <div style={{"width":"20%"}}>
+                        Quantity
+                    </div>
+                    <div style={{"width":"20%"}}>
+                        SubTotal
+                    </div>
+                </div>
+                {renderReceiptProductAdded()}
+                <div style={{"display":"flex","marginTop":"3%"}}>
+                    <div style={{"width":"20%"}}>
+                        Total Items
+                    </div>
+                    <div style={{"width":"50%"}}>
+                        {items1} Total
+                    </div>
+                    <div style={{"width":"30%"}}>
+                        {Math.round((Total*1000)/1000).toFixed(3)} EUR
+                    </div>
+                   </div>
+                    <div style={{"display":"flex","marginTop":"3%"}}>
+                    <div style={{"width":"30%"}}>
+                            </div>
+                        <div style={{"width":"30%"}}>Discount
+                            </div>
+                            <div style={{"width":"40%"}}>{Discount}%
+                            </div>
+                    </div>
+                    <div style={{"display":"flex","marginTop":"3%"}}>
+                    <div style={{"width":"30%"}}>
+                            </div>
+                        <div style={{"width":"30%"}}>VAT
+                            </div>
+                            <div style={{"width":"40%"}}>{VAT}%
+                            </div>
+                    </div>
+                    <button onClick={()=>{setShowPopUp(false); setBlur("")}} style={{"width":"90%","margin":"4%"}}>Close</button>
+                </div>
+                </div>
+            </div>
+            }
+        </div>
         </div>
     )
 };
