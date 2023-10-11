@@ -107,7 +107,12 @@ const POSSystem= () => {
     }
 
     useEffect(()=>{
-        setTotal(subTotal);
+        let value1=(VAT*subTotal)/100;
+        setVATValue(value1);
+        let value2=(Discount*subTotal)/100;
+        setDiscountValue(value2);
+        setTotal(subTotal+value1-value2);
+
     },[subTotal]);
 
     const cancelBtn=(e)=>{
